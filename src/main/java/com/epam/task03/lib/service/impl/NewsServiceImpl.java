@@ -57,12 +57,8 @@ public class NewsServiceImpl implements NewsService {
             NewsDAOFactory factory = NewsDAOFactory.getInstance();
             NewsDAO newsDAOTxt = factory.getNewsDAO();
             ArrayList<News> news = newsDAOTxt.getNewsByTitle(request);
-            for (News news1 : news) {
-                validateNews(news1);
-            }
-
             return news;
-        } catch (DAOException | ValidationException e) {
+        } catch (DAOException e) {
             throw new ServiceException(e);
         }
     }
@@ -84,12 +80,8 @@ public class NewsServiceImpl implements NewsService {
             NewsDAOFactory factory = NewsDAOFactory.getInstance();
             NewsDAO newsDAOTxt = factory.getNewsDAO();
             ArrayList<News> news = newsDAOTxt.getNewsByCategory(request);
-            for (News news1 : news) {
-                validateNews(news1);
-            }
-
             return news;
-        } catch (DAOException | ValidationException e) {
+        } catch (DAOException e) {
             throw new ServiceException(e);
         }
     }
@@ -111,12 +103,8 @@ public class NewsServiceImpl implements NewsService {
             NewsDAOFactory factory = NewsDAOFactory.getInstance();
             NewsDAO newsDAOTxt = factory.getNewsDAO();
             ArrayList<News> news = newsDAOTxt.getNewsByDate(request);
-            for (News news1 : news) {
-                validateNews(news1);
-            }
-
             return news;
-        } catch (DAOException | ValidationException e) {
+        } catch (DAOException e) {
             throw new ServiceException(e);
         }
     }

@@ -7,6 +7,9 @@ import com.epam.task03.lib.service.NewsService;
 import com.epam.task03.lib.service.exception.ServiceException;
 import com.epam.task03.lib.service.factory.NewsServiceFactory;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 /**
  * Class provides actions to perform add command
  */
@@ -35,7 +38,6 @@ public class AddCommand implements Command {
             newsService.addNews(request);
             response = SUCCESS_RESPONSE;
         } catch (IllegalArgumentException | ServiceException e) {
-            System.out.println(e.getMessage());
             response = FAIL_RESPONSE;
         }
         return response;

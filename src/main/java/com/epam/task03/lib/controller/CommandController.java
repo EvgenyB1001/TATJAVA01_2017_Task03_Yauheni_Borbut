@@ -1,6 +1,7 @@
 package com.epam.task03.lib.controller;
 
 import com.epam.task03.lib.bean.Category;
+import com.epam.task03.lib.bean.CommandName;
 import com.epam.task03.lib.bean.Request;
 import com.epam.task03.lib.controller.command.Command;
 import com.epam.task03.lib.exception.InitializationException;

@@ -2,9 +2,16 @@ package com.epam.task03.lib.view;
 
 import com.epam.task03.lib.controller.CommandController;
 
-
+/**
+ * Entry point to application.
+ */
 public class Main {
 
+    /**
+     * Method gets parameters of command, resend them to controller and returns response of executing
+     *
+     * @param args input parameters from user
+     */
     public static void main(String[] args) {
 
         // Arrays emulate the input array from console

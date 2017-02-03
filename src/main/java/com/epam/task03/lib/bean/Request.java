@@ -1,6 +1,5 @@
 package com.epam.task03.lib.bean;
 
-import com.epam.task03.lib.controller.CommandName;
 import com.epam.task03.lib.exception.InitializationException;
 
 /**

@@ -6,12 +6,14 @@ import com.epam.task03.lib.bean.Request;
 import com.epam.task03.lib.dao.NewsDAO;
 import com.epam.task03.lib.dao.exception.DAOException;
 import com.epam.task03.lib.exception.InitializationException;
+import sun.rmi.runtime.Log;
 
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Scanner;
+import java.util.logging.Logger;
 
 /**
  * Class provides action with file to write and read news to it
@@ -75,6 +77,7 @@ public class NewsDAOTxtImpl implements NewsDAO {
             }
             return list;
         } catch (IOException | InitializationException e) {
+
             throw new DAOException(e);
         }
     }

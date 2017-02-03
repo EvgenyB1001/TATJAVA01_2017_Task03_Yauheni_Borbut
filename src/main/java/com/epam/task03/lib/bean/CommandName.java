@@ -1,4 +1,4 @@
-package com.epam.task03.lib.controller;
+package com.epam.task03.lib.bean;
 
 /**
  * Enum of names of command
