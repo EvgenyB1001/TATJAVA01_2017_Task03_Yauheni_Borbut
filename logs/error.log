@@ -1,0 +1,1 @@
+2017-02-05T21:18:34,075 [ERROR] (CommandController.java:51) - java.lang.IllegalArgumentException: No enum constant com.epam.task03.lib.bean.CommandName.FIND_BY_CATEGOR

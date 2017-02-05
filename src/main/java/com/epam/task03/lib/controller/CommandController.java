@@ -5,12 +5,15 @@ import com.epam.task03.lib.bean.CommandName;
 import com.epam.task03.lib.bean.Request;
 import com.epam.task03.lib.controller.command.Command;
 import com.epam.task03.lib.exception.InitializationException;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  * Class provides actions to perform command according to request from user
  */
 public class CommandController {
 
+    private static final Logger logger = LogManager.getLogger();
     private CommandProvider provider = new CommandProvider();
     private static CommandController instance;
 
@@ -31,20 +34,21 @@ public class CommandController {
     /**
      * Method gets request as argument and calls definite command to execute current request
      *
-     * @param params parameters of request to execute
+     * @param line line of parameters of request to execute
      */
-    public String executeRequest(String[] params) {
-        if (params == null) {
+    public String executeRequest(String line) {
+        if (line == null) {
             return FAIL_RESPONSE;
         }
 
         String response;
         try {
-            Request request = createRequest(params);
+            Request request = createRequest(line);
             Command command1 = provider.getCommand(request.getCommandName().name());
             response = command1.executeCommand(request);
         } catch (InitializationException e) {
             response = FAIL_RESPONSE;
+            logger.error(e.getMessage());
         }
 
         return response;
@@ -54,12 +58,12 @@ public class CommandController {
      * Method gets array of parameters, parses them, creates a request by this parameters and returns that
      * request
      *
-     * @param args array of arguments to create request
+     * @param requestLine line of arguments to create request
      * @return object of request
      * @throws InitializationException if array of parameters isn't initialized correctly
      */
-    private Request createRequest(String[] args) throws InitializationException {
-        if (args == null || args.length <= 1) {
+    private Request createRequest(String requestLine) throws InitializationException {
+        if (requestLine == null) {
             throw new InitializationException("Request isn't initialized. Request can't be created");
         }
 
@@ -67,14 +71,11 @@ public class CommandController {
         try {
             request = new Request();
             CommandName commandName;
-            commandName = CommandName.valueOf(args[0].toUpperCase());
+            String name = requestLine.substring(0, requestLine.indexOf(" "));
+            String parameters = requestLine.substring(requestLine.indexOf(" ") + 1);
+            commandName = CommandName.valueOf(name.toUpperCase());
             request.setCommandToRequest(commandName);
-            StringBuilder builder = new StringBuilder();
-            for (int i = 1; i < args.length; i++) {
-                builder.append(args[i]);
-            }
-
-            String[] params = builder.toString().split(",");
+            String[] params = parameters.split(",");
             setRequestParams(request, params);
         } catch (IllegalArgumentException e) {
             throw new InitializationException(e);

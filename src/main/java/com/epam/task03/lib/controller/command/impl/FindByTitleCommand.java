@@ -7,6 +7,8 @@ import com.epam.task03.lib.exception.InitializationException;
 import com.epam.task03.lib.service.NewsService;
 import com.epam.task03.lib.service.exception.ServiceException;
 import com.epam.task03.lib.service.factory.NewsServiceFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.ArrayList;
 
@@ -15,6 +17,7 @@ import java.util.ArrayList;
  */
 public class FindByTitleCommand implements Command {
 
+    private static final Logger logger = LogManager.getLogger();
     private final String FAIL_RESPONSE = "Some errors during searching news";
 
     /**
@@ -46,6 +49,7 @@ public class FindByTitleCommand implements Command {
             response += builder.toString();
         } catch (ServiceException e) {
             response = FAIL_RESPONSE;
+            logger.error(e.getMessage());
         }
 
         return response;

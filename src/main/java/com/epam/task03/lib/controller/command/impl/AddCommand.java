@@ -6,15 +6,16 @@ import com.epam.task03.lib.exception.InitializationException;
 import com.epam.task03.lib.service.NewsService;
 import com.epam.task03.lib.service.exception.ServiceException;
 import com.epam.task03.lib.service.factory.NewsServiceFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  * Class provides actions to perform add command
  */
 public class AddCommand implements Command {
 
+    private static final Logger logger = LogManager.getLogger();
     private final String SUCCESS_RESPONSE = "News successfully added";
     private final String FAIL_RESPONSE = "Some errors during adding news";
 
@@ -39,6 +40,7 @@ public class AddCommand implements Command {
             response = SUCCESS_RESPONSE;
         } catch (IllegalArgumentException | ServiceException e) {
             response = FAIL_RESPONSE;
+            logger.error(e.getMessage());
         }
         return response;
     }
