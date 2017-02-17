@@ -2,10 +2,14 @@ package com.epam.task03.lib.bean;
 
 import com.epam.task03.lib.exception.InitializationException;
 
+import java.io.Serializable;
+
 /**
  * Class contains data of request
  */
-public class Request {
+public class Request implements Serializable {
+
+    private static final long serialVersionUID = 1L;
 
     /**
      * Command of current request
@@ -27,7 +31,11 @@ public class Request {
      */
     private String date;
 
-    public Request() {}
+    private static final String INIT_EXCEPTION_TEXT = "Parameters to create request are not initialized";
+
+    public Request() {
+        super();
+    }
 
     /**
      * Method sets title of news to current request
@@ -37,7 +45,7 @@ public class Request {
      */
     public void setCommandToRequest(CommandName name) throws InitializationException {
         if (name == null) {
-            throw new InitializationException("Parameters to create request are not initialized");
+            throw new InitializationException(INIT_EXCEPTION_TEXT);
         }
         this.commandName = name;
     }
@@ -50,7 +58,7 @@ public class Request {
      */
     public void setTitleToRequest(String title) throws InitializationException {
         if (title == null) {
-            throw new InitializationException("Parameters to create request are not initialized");
+            throw new InitializationException(INIT_EXCEPTION_TEXT);
         }
         this.title = title;
     }
@@ -63,7 +71,7 @@ public class Request {
      */
     public void setCategoryToRequest(Category category) throws InitializationException {
         if (category == null) {
-            throw new InitializationException("Parameters to create request are not initialized");
+            throw new InitializationException(INIT_EXCEPTION_TEXT);
         }
         this.category = category;
     }
@@ -76,7 +84,7 @@ public class Request {
      */
     public void setDateToRequest(String date) throws InitializationException {
         if (date == null) {
-            throw new InitializationException("Parameters to create request are not initialized");
+            throw new InitializationException(INIT_EXCEPTION_TEXT);
         }
         this.date = date;
     }

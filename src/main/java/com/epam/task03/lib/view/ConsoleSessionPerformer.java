@@ -9,13 +9,14 @@ import java.util.Scanner;
  */
 public class ConsoleSessionPerformer {
 
+    private static final String WELCOME_TEXT = "Hello! Type in command to perform";
     /**
      * Method gets line with request from user and resend it
      * to controller to perform request
      */
     public void performSession() {
         Scanner scanner = new Scanner(System.in);
-        System.out.println("Hello! Type in command to perform");
+        System.out.println(WELCOME_TEXT);
         String line = scanner.nextLine();
         /*
          * Examples of request from user

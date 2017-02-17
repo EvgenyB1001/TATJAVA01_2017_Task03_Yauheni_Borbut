@@ -17,6 +17,14 @@ import java.util.ArrayList;
  */
 public class NewsServiceImpl implements NewsService {
 
+    private static final String INIT_EXCEPTION_ADD_NEWS = "Request is not initialized. News can't be added";
+    private static final String INIT_EXCEPTION_FIND_NEWS = "Request is not initialized. It can't be performed";
+    private static final String VALIDATION_EXCEPTION_TITLE = "Invalid value of title";
+    private static final String VALIDATION_EXCEPTION_CATEGORY = "Invalid value of category";
+    private static final String VALIDATION_EXCEPTION_DATE = "Invalid format of date";
+    private static final String DATE_DELIMITER = ":";
+
+
     /**
      * Method validate current news and send checked news to DAO
      *
@@ -26,15 +34,15 @@ public class NewsServiceImpl implements NewsService {
     @Override
     public void addNews(Request request) throws ServiceException {
         if (request == null || request.getTitle() == null || request.getCategory() == null || request.getDate() == null) {
-            throw new ServiceException("Request is not initialized. News can't be added");
+            throw new ServiceException(INIT_EXCEPTION_ADD_NEWS);
         }
 
+        NewsDAOFactory factory = NewsDAOFactory.getInstance();
+        NewsDAO newsDAO = factory.getNewsDAO();
         try {
-            NewsDAOFactory factory = NewsDAOFactory.getInstance();
-            NewsDAO newsDAOTxt = factory.getNewsDAO();
             News news = new News(request.getTitle(), request.getCategory(), request.getDate());
             validateNews(news);
-            newsDAOTxt.addNews(news);
+            newsDAO.addNews(news);
         } catch (DAOException | InitializationException | ValidationException e) {
             throw new ServiceException(e);
         }
@@ -50,17 +58,20 @@ public class NewsServiceImpl implements NewsService {
     @Override
     public ArrayList<News> findNewsByTitle(Request request) throws ServiceException {
         if (request == null) {
-            throw new ServiceException("Request is not initialized. It can't be performed");
+            throw new ServiceException(INIT_EXCEPTION_FIND_NEWS);
         }
 
+        NewsDAOFactory factory = NewsDAOFactory.getInstance();
+        NewsDAO newsDAO = factory.getNewsDAO();
+        ArrayList<News> news = new ArrayList<>();
         try {
-            NewsDAOFactory factory = NewsDAOFactory.getInstance();
-            NewsDAO newsDAOTxt = factory.getNewsDAO();
-            ArrayList<News> news = newsDAOTxt.getNewsByTitle(request);
-            return news;
+            news = newsDAO.getNewsByTitle(request);
+
         } catch (DAOException e) {
             throw new ServiceException(e);
         }
+
+        return news;
     }
 
     /**
@@ -73,17 +84,19 @@ public class NewsServiceImpl implements NewsService {
     @Override
     public ArrayList<News> findNewsByCategory(Request request) throws ServiceException {
         if (request == null) {
-            throw new ServiceException("Request is not initialized. It can't be performed");
+            throw new ServiceException(INIT_EXCEPTION_FIND_NEWS);
         }
 
+        NewsDAOFactory factory = NewsDAOFactory.getInstance();
+        NewsDAO newsDAO = factory.getNewsDAO();
+        ArrayList<News> news = new ArrayList<>();
         try {
-            NewsDAOFactory factory = NewsDAOFactory.getInstance();
-            NewsDAO newsDAOTxt = factory.getNewsDAO();
-            ArrayList<News> news = newsDAOTxt.getNewsByCategory(request);
-            return news;
+            news = newsDAO.getNewsByCategory(request);
         } catch (DAOException e) {
             throw new ServiceException(e);
         }
+
+        return news;
     }
 
     /**
@@ -96,17 +109,19 @@ public class NewsServiceImpl implements NewsService {
     @Override
     public ArrayList<News> findNewsByDate(Request request) throws ServiceException  {
         if (request == null) {
-            throw new ServiceException("Request is not initialized. It can't be performed");
+            throw new ServiceException(INIT_EXCEPTION_FIND_NEWS);
         }
 
+        NewsDAOFactory factory = NewsDAOFactory.getInstance();
+        NewsDAO newsDAO = factory.getNewsDAO();
+        ArrayList<News> news = new ArrayList<>();
         try {
-            NewsDAOFactory factory = NewsDAOFactory.getInstance();
-            NewsDAO newsDAOTxt = factory.getNewsDAO();
-            ArrayList<News> news = newsDAOTxt.getNewsByDate(request);
-            return news;
+            news = newsDAO.getNewsByDate(request);
         } catch (DAOException e) {
             throw new ServiceException(e);
         }
+
+        return news;
     }
 
     /**
@@ -116,12 +131,12 @@ public class NewsServiceImpl implements NewsService {
      * @throws ValidationException if data of current news isn't valid
      */
     private void validateNews(News news) throws ValidationException {
-        if (news.getTitle() == null || news.getTitle().equals("")) {
-            throw new ValidationException("Invalid value of title");
+        if (news.getTitle() == null || news.getTitle().isEmpty()) {
+            throw new ValidationException(VALIDATION_EXCEPTION_TITLE);
         }
 
-        if (news.getCategory() == null || news.getCategory().name().equals("")) {
-            throw new ValidationException("Invalid value of category");
+        if (news.getCategory() == null) {
+            throw new ValidationException(VALIDATION_EXCEPTION_CATEGORY);
         }
         validateDate(news.getDate());
     }
@@ -133,30 +148,35 @@ public class NewsServiceImpl implements NewsService {
      * @throws ValidationException if date of current news isn't valid
      */
     private void validateDate(String date) throws ValidationException {
-        String[] parts = date.split(":");
+        String[] parts = date.split(DATE_DELIMITER);
         if (parts.length != 3) {
-            throw new ValidationException("Invalid format of date");
+            throw new ValidationException(VALIDATION_EXCEPTION_DATE);
         }
-        if (parts[0].length() != 2 || parts[1].length() != 2 || parts[2].length() != 4) {
-            throw new ValidationException("Format of date should be mm:dd:yyyy");
+
+        String monthToString = parts[0], dayToString = parts[1], yearToString = parts[2];
+
+        if (monthToString.length() != 2 || dayToString.length() != 2 || yearToString.length() != 4) {
+            throw new ValidationException(VALIDATION_EXCEPTION_DATE);
         }
+
         Integer month;
 
         try {
-            month = Integer.parseInt(parts[0]);
+            month = Integer.parseInt(monthToString);
         } catch (NumberFormatException e) {
-            throw new ValidationException("Invalid value of month");
+            throw new ValidationException(VALIDATION_EXCEPTION_DATE);
         }
 
         if (month < 1 || month > 12) {
-            throw new ValidationException("Invalid value of month");
+            throw new ValidationException(VALIDATION_EXCEPTION_DATE);
         }
-        Integer day;
-        try {
-            day = Integer.parseInt(parts[1]);
 
+        Integer day;
+
+        try {
+            day = Integer.parseInt(dayToString);
         } catch (NumberFormatException e) {
-            throw new ValidationException("Invalid value of day");
+            throw new ValidationException(VALIDATION_EXCEPTION_DATE);
         }
 
         if (day < 1 || day > 31) {
@@ -164,9 +184,10 @@ public class NewsServiceImpl implements NewsService {
         }
 
         try {
-            Integer.parseInt(parts[2]);
+            Integer.parseInt(yearToString);
         } catch (NumberFormatException e) {
-            throw new ValidationException("Invalid value of day");
+            throw new ValidationException(VALIDATION_EXCEPTION_DATE);
         }
     }
+
 }

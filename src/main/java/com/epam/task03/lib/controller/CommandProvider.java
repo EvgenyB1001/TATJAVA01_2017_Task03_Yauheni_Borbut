@@ -11,7 +11,7 @@ import java.util.HashMap;
  */
 public class CommandProvider {
 
-    private HashMap<CommandName, Command> commands = new HashMap<>();
+    private static final HashMap<CommandName, Command> commands = new HashMap<>();
 
     CommandProvider() {
         commands.put(CommandName.ADD, new AddCommand());

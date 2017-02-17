@@ -14,7 +14,7 @@ import org.apache.logging.log4j.Logger;
 public class CommandController {
 
     private static final Logger logger = LogManager.getLogger();
-    private CommandProvider provider = new CommandProvider();
+
     private static CommandController instance;
 
     private CommandController() {}
@@ -29,7 +29,14 @@ public class CommandController {
         return instance;
     }
 
-    private final String FAIL_RESPONSE = "Some errors during executing request. Try again";
+    private static final String FAIL_RESPONSE = "Some errors during executing request. Try again";
+
+    private static final String INIT_EXCEPTION_TEXT = "Request isn't initialized. Request can't be created";
+    private static final String INVALID_PARAMETER_EXCEPTION_TEXT = "Invalid parameters. Request can't be created";
+
+    private static final String COMMAND_DELIMITER = " ";
+    private static final String PARAM_DELIMITER = ",";
+
 
     /**
      * Method gets request as argument and calls definite command to execute current request
@@ -41,6 +48,8 @@ public class CommandController {
             return FAIL_RESPONSE;
         }
 
+        CommandProvider provider = new CommandProvider();
+
         String response;
         try {
             Request request = createRequest(line);
@@ -48,7 +57,7 @@ public class CommandController {
             response = command1.executeCommand(request);
         } catch (InitializationException e) {
             response = FAIL_RESPONSE;
-            logger.error(e.getMessage());
+            logger.error(e);
         }
 
         return response;
@@ -64,18 +73,18 @@ public class CommandController {
      */
     private Request createRequest(String requestLine) throws InitializationException {
         if (requestLine == null) {
-            throw new InitializationException("Request isn't initialized. Request can't be created");
+            throw new InitializationException(INIT_EXCEPTION_TEXT);
         }
 
         Request request;
         try {
             request = new Request();
             CommandName commandName;
-            String name = requestLine.substring(0, requestLine.indexOf(" "));
-            String parameters = requestLine.substring(requestLine.indexOf(" ") + 1);
+            String name = requestLine.substring(0, requestLine.indexOf(COMMAND_DELIMITER));
+            String parameters = requestLine.substring(requestLine.indexOf(COMMAND_DELIMITER) + 1);
             commandName = CommandName.valueOf(name.toUpperCase());
             request.setCommandToRequest(commandName);
-            String[] params = parameters.split(",");
+            String[] params = parameters.split(PARAM_DELIMITER);
             setRequestParams(request, params);
         } catch (IllegalArgumentException e) {
             throw new InitializationException(e);
@@ -104,7 +113,7 @@ public class CommandController {
         } else if (commandName.equals(CommandName.FIND_BY_DATE) && params.length == 1) {
             request.setDateToRequest(params[0]);
         } else {
-            throw new InitializationException("Invalid parameters. Request can't be created");
+            throw new InitializationException(INVALID_PARAMETER_EXCEPTION_TEXT);
         }
     }
 }

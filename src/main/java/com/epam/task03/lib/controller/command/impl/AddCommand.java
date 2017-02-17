@@ -16,8 +16,11 @@ import org.apache.logging.log4j.Logger;
 public class AddCommand implements Command {
 
     private static final Logger logger = LogManager.getLogger();
-    private final String SUCCESS_RESPONSE = "News successfully added";
-    private final String FAIL_RESPONSE = "Some errors during adding news";
+
+    private static final String SUCCESS_RESPONSE = "News successfully added";
+    private static final String FAIL_RESPONSE = "Some errors during adding news";
+
+    private static final String INIT_ERROR_TEXT = "Request isn't initialized";
 
     /**
      * Method gets request as argument, resend it and return response of command execution
@@ -29,7 +32,7 @@ public class AddCommand implements Command {
     @Override
     public String executeCommand(Request request) throws InitializationException {
         if (request == null) {
-            throw new InitializationException("Request isn't initialized");
+            throw new InitializationException(INIT_ERROR_TEXT);
         }
 
         NewsServiceFactory factory = NewsServiceFactory.getInstance();
@@ -40,7 +43,7 @@ public class AddCommand implements Command {
             response = SUCCESS_RESPONSE;
         } catch (IllegalArgumentException | ServiceException e) {
             response = FAIL_RESPONSE;
-            logger.error(e.getMessage());
+            logger.error(e);
         }
         return response;
     }

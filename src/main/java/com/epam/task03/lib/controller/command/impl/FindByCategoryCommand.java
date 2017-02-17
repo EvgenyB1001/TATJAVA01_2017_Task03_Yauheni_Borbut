@@ -18,19 +18,24 @@ import java.util.ArrayList;
 public class FindByCategoryCommand implements Command {
 
     private static final Logger logger = LogManager.getLogger();
-    private final String FAIL_RESPONSE = "Some errors during searching news";
+    private static final String FAIL_RESPONSE = "Some errors during searching news";
+    private static final String RESPONSE_HEADER = "Found news: ";
+    private static final String PARAMS_DELIMITER = " | ";
+    private static final String NEWS_DELIMITER = " ; ";
+
+    private static final String REQUEST_INIT_EXCEPTION = "Request isn't initialized";
 
     /**
      * Method gets request as argument, resend it and return response of command execution
      *
-     * @param request  request to execute
+     * @param request request to execute
      * @return response of execution
      * @throws InitializationException if <code>request</code> isn't initialized
      */
     @Override
     public String executeCommand(Request request) throws InitializationException {
         if (request == null) {
-            throw new InitializationException("Request isn't initialized");
+            throw new InitializationException(REQUEST_INIT_EXCEPTION);
         }
 
         NewsServiceFactory factory = NewsServiceFactory.getInstance();
@@ -39,17 +44,19 @@ public class FindByCategoryCommand implements Command {
         try {
             ArrayList<News> result = newsService.findNewsByCategory(request);
             StringBuilder builder = new StringBuilder();
-            response = "Found " + result.size() + " news to current request 'by category: "+ request.getCategory() + "': ";
+            response = RESPONSE_HEADER + result.size() + "\n";
             for(News news : result) {
-                builder.append(news.getTitle()).append(" | ").
-                        append(news.getCategory()).append(" | ").
-                        append(news.getDate()).append(" ; ");
+                builder.append(news.getTitle()).append(PARAMS_DELIMITER).
+                        append(news.getCategory()).append(PARAMS_DELIMITER).
+                        append(news.getDate()).append(NEWS_DELIMITER);
             }
+
             response += builder.toString();
         } catch (ServiceException e) {
             response = FAIL_RESPONSE;
-            logger.error(e.getMessage());
+            logger.error(e);
         }
+
         return response;
     }
 }

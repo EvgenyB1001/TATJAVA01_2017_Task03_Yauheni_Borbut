@@ -2,10 +2,14 @@ package com.epam.task03.lib.bean;
 
 import com.epam.task03.lib.exception.InitializationException;
 
+import java.io.Serializable;
+
 /**
  * Class contains data of definite news
  */
-public class News {
+public class News implements Serializable {
+
+    private static final long serialVersionUID = 1L;
 
     /**
      * Title of news
@@ -22,6 +26,11 @@ public class News {
      */
     private String date;
 
+    private static final String INIT_EXCEPTION_CONSTRUCTOR_TEXT = "Parameters are not initialized. News can't be created";
+    private static final String INIT_EXCEPTION_SET_CATEGORY_TEXT = "Category isn't initialized";
+    private static final String INIT_EXCEPTION_SET_DATE_TEXT = "Date isn't initialized";
+    private static final String INIT_EXCEPTION_SET_TITLE_TEXT = "Title isn't initialized";
+
     /**
      * Default constructor
      */
@@ -30,7 +39,7 @@ public class News {
 
     public News(String title, Category category, String date) throws InitializationException {
         if (title == null || category == null || date == null) {
-            throw new InitializationException("Parameters are not initialized. News can't be created");
+            throw new InitializationException(INIT_EXCEPTION_CONSTRUCTOR_TEXT);
         }
         this.title = title;
         this.category = category;
@@ -90,7 +99,7 @@ public class News {
      */
     public void setTitle(String title) throws InitializationException{
         if (title == null) {
-            throw new InitializationException("Title isn't initialized");
+            throw new InitializationException(INIT_EXCEPTION_SET_TITLE_TEXT);
         }
         this.title = title;
     }
@@ -103,7 +112,7 @@ public class News {
      */
     public void setCategory(Category category) throws InitializationException {
         if (category == null) {
-            throw new InitializationException("Title isn't initialized");
+            throw new InitializationException(INIT_EXCEPTION_SET_CATEGORY_TEXT);
         }
 
         this.category = category;
@@ -117,7 +126,7 @@ public class News {
      */
     public void setDate(String date) throws InitializationException {
         if (date == null) {
-            throw new InitializationException("Title isn't initialized");
+            throw new InitializationException(INIT_EXCEPTION_SET_DATE_TEXT);
         }
 
         this.date = date;
