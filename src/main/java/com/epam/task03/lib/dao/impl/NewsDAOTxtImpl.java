@@ -11,6 +11,8 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.LinkedList;
 import java.util.Scanner;
 
 /**
@@ -59,7 +61,7 @@ public class NewsDAOTxtImpl implements NewsDAO {
         File file = new File(System.getProperty(PROPERTY_NAME) + FILE_NAME);
         try (Scanner scanner = new Scanner(file)) {
             Category category = request.getCategory();
-            ArrayList<News> list = new ArrayList<>();
+            LinkedList<News> tempList = new LinkedList<>();
             while (scanner.hasNext()) {
                 String line = scanner.nextLine();
                 String[] params = line.split(LINE_DELIMITER);
@@ -68,10 +70,12 @@ public class NewsDAOTxtImpl implements NewsDAO {
                     if ((name[1].toUpperCase()).equals(category.name())) {
                         Category cat = Category.valueOf(name[1].toUpperCase());
                         News news = new News(name[0], cat, name[2]);
-                        list.add(news);
+                        tempList.add(news);
                     }
                 }
             }
+
+            ArrayList<News> list = new ArrayList<>(tempList);
             return list;
         } catch (IOException | InitializationException e) {
 
@@ -92,7 +96,7 @@ public class NewsDAOTxtImpl implements NewsDAO {
         File file = new File(System.getProperty(PROPERTY_NAME) + FILE_NAME);
         try (Scanner scanner = new Scanner(file)) {
             String title = request.getTitle();
-            ArrayList<News> list = new ArrayList<>();
+            LinkedList<News> tempList = new LinkedList<>();
             while (scanner.hasNext()) {
                 String line = scanner.nextLine();
                 String[] params = line.split(LINE_DELIMITER);
@@ -101,11 +105,12 @@ public class NewsDAOTxtImpl implements NewsDAO {
                     if (name[0].equals(title)) {
                         Category cat = Category.valueOf(name[1].toUpperCase());
                         News news = new News(name[0], cat, name[2]);
-                        list.add(news);
+                        tempList.add(news);
                     }
                 }
             }
 
+            ArrayList<News> list = new ArrayList<>(tempList);
             return list;
         } catch (IOException | InitializationException e) {
             throw new DAOException(e);
@@ -125,7 +130,7 @@ public class NewsDAOTxtImpl implements NewsDAO {
         File file = new File(System.getProperty(PROPERTY_NAME) + FILE_NAME);
         try (Scanner scanner = new Scanner(file)) {
             String date = request.getDate();
-            ArrayList<News> list = new ArrayList<>();
+            LinkedList<News> tempList = new LinkedList<>();
             while (scanner.hasNext()) {
                 String line = scanner.nextLine();
                 String[] params = line.split(LINE_DELIMITER);
@@ -134,11 +139,12 @@ public class NewsDAOTxtImpl implements NewsDAO {
                     if (name[2].equals(date)) {
                         Category cat = Category.valueOf(name[1].toUpperCase());
                         News news = new News(name[0], cat, name[2]);
-                        list.add(news);
+                        tempList.add(news);
                     }
                 }
             }
 
+            ArrayList<News> list = new ArrayList<>(tempList);
             return list;
         } catch (IOException | InitializationException e) {
             throw new DAOException(e);
