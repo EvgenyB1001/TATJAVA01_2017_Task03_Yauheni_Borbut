@@ -58,10 +58,12 @@ public class NewsDAOTxtImpl implements NewsDAO {
     @Override
     public ArrayList<News> getNewsByCategory(Request request) throws DAOException {
 
+        ArrayList<News> list;
         File file = new File(System.getProperty(PROPERTY_NAME) + FILE_NAME);
         try (Scanner scanner = new Scanner(file)) {
             Category category = request.getCategory();
             LinkedList<News> tempList = new LinkedList<>();
+
             while (scanner.hasNext()) {
                 String line = scanner.nextLine();
                 String[] params = line.split(LINE_DELIMITER);
@@ -75,12 +77,13 @@ public class NewsDAOTxtImpl implements NewsDAO {
                 }
             }
 
-            ArrayList<News> list = new ArrayList<>(tempList);
-            return list;
-        } catch (IOException | InitializationException e) {
+            list = new ArrayList<>(tempList);
 
+        } catch (IOException | InitializationException e) {
             throw new DAOException(e);
         }
+
+        return list;
     }
 
     /**
@@ -92,7 +95,7 @@ public class NewsDAOTxtImpl implements NewsDAO {
      */
     @Override
     public ArrayList<News> getNewsByTitle(Request request) throws DAOException {
-
+        ArrayList<News> list;
         File file = new File(System.getProperty(PROPERTY_NAME) + FILE_NAME);
         try (Scanner scanner = new Scanner(file)) {
             String title = request.getTitle();
@@ -110,11 +113,12 @@ public class NewsDAOTxtImpl implements NewsDAO {
                 }
             }
 
-            ArrayList<News> list = new ArrayList<>(tempList);
-            return list;
+             list = new ArrayList<>(tempList);
+
         } catch (IOException | InitializationException e) {
             throw new DAOException(e);
         }
+        return list;
     }
 
     /**
@@ -127,6 +131,7 @@ public class NewsDAOTxtImpl implements NewsDAO {
     @Override
     public ArrayList<News> getNewsByDate(Request request) throws DAOException {
 
+        ArrayList<News> list;
         File file = new File(System.getProperty(PROPERTY_NAME) + FILE_NAME);
         try (Scanner scanner = new Scanner(file)) {
             String date = request.getDate();
@@ -144,10 +149,12 @@ public class NewsDAOTxtImpl implements NewsDAO {
                 }
             }
 
-            ArrayList<News> list = new ArrayList<>(tempList);
-            return list;
+            list = new ArrayList<>(tempList);
+
         } catch (IOException | InitializationException e) {
             throw new DAOException(e);
         }
+
+        return list;
     }
 }

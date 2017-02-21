@@ -63,7 +63,7 @@ public class NewsServiceImpl implements NewsService {
 
         NewsDAOFactory factory = NewsDAOFactory.getInstance();
         NewsDAO newsDAO = factory.getNewsDAO();
-        ArrayList<News> news = new ArrayList<>();
+        ArrayList<News> news;
         try {
             news = newsDAO.getNewsByTitle(request);
 
@@ -89,7 +89,7 @@ public class NewsServiceImpl implements NewsService {
 
         NewsDAOFactory factory = NewsDAOFactory.getInstance();
         NewsDAO newsDAO = factory.getNewsDAO();
-        ArrayList<News> news = new ArrayList<>();
+        ArrayList<News> news;
         try {
             news = newsDAO.getNewsByCategory(request);
         } catch (DAOException e) {
@@ -114,7 +114,7 @@ public class NewsServiceImpl implements NewsService {
 
         NewsDAOFactory factory = NewsDAOFactory.getInstance();
         NewsDAO newsDAO = factory.getNewsDAO();
-        ArrayList<News> news = new ArrayList<>();
+        ArrayList<News> news;
         try {
             news = newsDAO.getNewsByDate(request);
         } catch (DAOException e) {
