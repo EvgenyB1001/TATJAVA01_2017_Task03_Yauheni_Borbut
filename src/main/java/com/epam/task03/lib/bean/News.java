@@ -1,15 +1,11 @@
 package com.epam.task03.lib.bean;
 
-import com.epam.task03.lib.exception.InitializationException;
-
 import java.io.Serializable;
 
 /**
  * Class contains data of definite news
  */
 public class News implements Serializable {
-
-    private static final long serialVersionUID = 1L;
 
     /**
      * Title of news
@@ -26,21 +22,14 @@ public class News implements Serializable {
      */
     private String date;
 
-    private static final String INIT_EXCEPTION_CONSTRUCTOR_TEXT = "Parameters are not initialized. News can't be created";
-    private static final String INIT_EXCEPTION_SET_CATEGORY_TEXT = "Category isn't initialized";
-    private static final String INIT_EXCEPTION_SET_DATE_TEXT = "Date isn't initialized";
-    private static final String INIT_EXCEPTION_SET_TITLE_TEXT = "Title isn't initialized";
-
     /**
      * Default constructor
      */
     public News() {
     }
 
-    public News(String title, Category category, String date) throws InitializationException {
-        if (title == null || category == null || date == null) {
-            throw new InitializationException(INIT_EXCEPTION_CONSTRUCTOR_TEXT);
-        }
+    public News(String title, Category category, String date) {
+
         this.title = title;
         this.category = category;
         this.date = date;
@@ -95,12 +84,8 @@ public class News implements Serializable {
      * Method sets title of news
      *
      * @param title title of news
-     * @throws InitializationException if <code>title</code> is null
      */
-    public void setTitle(String title) throws InitializationException{
-        if (title == null) {
-            throw new InitializationException(INIT_EXCEPTION_SET_TITLE_TEXT);
-        }
+    public void setTitle(String title) {
         this.title = title;
     }
 
@@ -108,13 +93,8 @@ public class News implements Serializable {
      * Method sets title of news
      *
      * @param category category of news
-     * @throws InitializationException if <code>category</code> is null
      */
-    public void setCategory(Category category) throws InitializationException {
-        if (category == null) {
-            throw new InitializationException(INIT_EXCEPTION_SET_CATEGORY_TEXT);
-        }
-
+    public void setCategory(Category category) {
         this.category = category;
     }
 
@@ -122,13 +102,8 @@ public class News implements Serializable {
      * Method sets title of news
      *
      * @param date date of news
-     * @throws InitializationException if <code>date</code> is null
      */
-    public void setDate(String date) throws InitializationException {
-        if (date == null) {
-            throw new InitializationException(INIT_EXCEPTION_SET_DATE_TEXT);
-        }
-
+    public void setDate(String date) {
         this.date = date;
     }
 

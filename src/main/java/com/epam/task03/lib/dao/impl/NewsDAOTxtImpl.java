@@ -79,7 +79,7 @@ public class NewsDAOTxtImpl implements NewsDAO {
 
             list = new ArrayList<>(tempList);
 
-        } catch (IOException | InitializationException e) {
+        } catch (IOException e) {
             throw new DAOException(e);
         }
 
@@ -115,7 +115,7 @@ public class NewsDAOTxtImpl implements NewsDAO {
 
              list = new ArrayList<>(tempList);
 
-        } catch (IOException | InitializationException e) {
+        } catch (IOException e) {
             throw new DAOException(e);
         }
         return list;
@@ -151,7 +151,7 @@ public class NewsDAOTxtImpl implements NewsDAO {
 
             list = new ArrayList<>(tempList);
 
-        } catch (IOException | InitializationException e) {
+        } catch (IOException e) {
             throw new DAOException(e);
         }
 

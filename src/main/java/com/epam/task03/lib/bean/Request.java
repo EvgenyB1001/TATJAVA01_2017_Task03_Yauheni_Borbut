@@ -9,6 +9,7 @@ import java.io.Serializable;
  */
 public class Request implements Serializable {
 
+
     private static final long serialVersionUID = 1L;
 
     /**
@@ -31,8 +32,6 @@ public class Request implements Serializable {
      */
     private String date;
 
-    private static final String INIT_EXCEPTION_TEXT = "Parameters to create request are not initialized";
-
     public Request() {
         super();
     }
@@ -41,12 +40,8 @@ public class Request implements Serializable {
      * Method sets title of news to current request
      *
      * @param name category of news
-     * @throws InitializationException if <code>category</code> is null
      */
-    public void setCommandToRequest(CommandName name) throws InitializationException {
-        if (name == null) {
-            throw new InitializationException(INIT_EXCEPTION_TEXT);
-        }
+    public void setCommandToRequest(CommandName name) {
         this.commandName = name;
     }
 
@@ -54,12 +49,9 @@ public class Request implements Serializable {
      * Method sets title of news to current request
      *
      * @param title title of news
-     * @throws InitializationException if <code>title</code> is null
      */
-    public void setTitleToRequest(String title) throws InitializationException {
-        if (title == null) {
-            throw new InitializationException(INIT_EXCEPTION_TEXT);
-        }
+    public void setTitleToRequest(String title) {
+
         this.title = title;
     }
 
@@ -67,12 +59,9 @@ public class Request implements Serializable {
      * Method sets title of news to current request
      *
      * @param category category of news
-     * @throws InitializationException if <code>category</code> is null
      */
-    public void setCategoryToRequest(Category category) throws InitializationException {
-        if (category == null) {
-            throw new InitializationException(INIT_EXCEPTION_TEXT);
-        }
+    public void setCategoryToRequest(Category category) {
+
         this.category = category;
     }
 
@@ -80,12 +69,9 @@ public class Request implements Serializable {
      * Method sets title of news to current request
      *
      * @param date date of news
-     * @throws InitializationException if <code>date</code> is null
      */
     public void setDateToRequest(String date) throws InitializationException {
-        if (date == null) {
-            throw new InitializationException(INIT_EXCEPTION_TEXT);
-        }
+
         this.date = date;
     }
 

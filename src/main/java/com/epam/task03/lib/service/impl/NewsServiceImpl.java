@@ -5,7 +5,6 @@ import com.epam.task03.lib.bean.Request;
 import com.epam.task03.lib.dao.NewsDAO;
 import com.epam.task03.lib.dao.exception.DAOException;
 import com.epam.task03.lib.dao.factory.NewsDAOFactory;
-import com.epam.task03.lib.exception.InitializationException;
 import com.epam.task03.lib.exception.ValidationException;
 import com.epam.task03.lib.service.NewsService;
 import com.epam.task03.lib.service.exception.ServiceException;
@@ -43,7 +42,7 @@ public class NewsServiceImpl implements NewsService {
             News news = new News(request.getTitle(), request.getCategory(), request.getDate());
             validateNews(news);
             newsDAO.addNews(news);
-        } catch (DAOException | InitializationException | ValidationException e) {
+        } catch (DAOException | ValidationException e) {
             throw new ServiceException(e);
         }
     }
